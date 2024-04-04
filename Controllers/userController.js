@@ -29,4 +29,25 @@ export class UserController {
             res.status(500).send('error: ' + err.message)
         }
     }
+
+    static async logIn(req, res) {
+        try {
+            const user = req.body
+            const userLogIn = await UserModel.logInUser(user)
+            
+            if (err) res.status(500).send('error: ' + err.message)            
+            if (userLogIn > 0) {
+                if (userLogIn[0].email === user.email && userLogIn[0].password === user.password) {
+                    return res.json({Status: 'Success'})
+                } else {
+                    return res.json({Error: 'Failed'})
+                }
+            } else {
+                return res.json({Error: 'NoEmail'})
+            }
+
+        } catch (err) {
+            res.status(500).send('error: ' + err.message)
+        }
+    }
 }
