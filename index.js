@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 import cookieParser from 'cookie-parser';
 import userRouter from './Routes/userRouter.js';
 import { db } from './Models/database/db.js';
+import bodyParser from 'body-parser';
 
 const PORT = 3930 
 
@@ -16,6 +17,8 @@ app.use(cors({
 }))
 app.disable('x-powered-by')
 app.use(cookieParser())
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
 
 app.use('/users', userRouter)
 

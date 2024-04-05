@@ -7,4 +7,6 @@ userRotuer.get('/', UserController.getAll)
 userRotuer.get('/:id', UserController.getOne)
 userRotuer.post('/', UserController.newUser)
 
+userRotuer.post('/recovery', UserController.resetPassword) 
+
 export default userRotuer

@@ -1,4 +1,5 @@
 import { UserModel } from "../Models/userModel.js"
+import { validateRecovery, validateUser } from "../Models/validations/userValidation.js"
 
 export class UserController {
     static async getAll(req, res) {
@@ -22,9 +23,37 @@ export class UserController {
 
     static async newUser(req, res) {
         try {
-            const user = req.body
+            const user = validateUser(req.body)
+
+            if (user.error) return res.status(400).json({ error: JSON.parse(user.error.message) })
+
             const newUser = await UserModel.createNewUser(user)
             res.json(newUser)
+        } catch (err) {
+            res.status(500).send('error: ' + err.message)
+        }
+    }
+
+    static async resetPassword(req, res) {
+        try {
+            const generateRandomPassword = () => {
+                const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()';
+                let password = '';
+                for (let i = 0; i < 8; i++) {
+                    password += characters.charAt(Math.floor(Math.random() * characters.length));
+                }
+                return password;
+            }
+
+            const email = req.body.email
+            const password = generateRandomPassword()
+
+            const user = {password}
+
+            if (email.error) return res.status(400).json({ error: JSON.parse(email.error.message) })
+
+            const userReset = await UserModel.resetPassword(user)
+            res.json(userReset)
         } catch (err) {
             res.status(500).send('error: ' + err.message)
         }

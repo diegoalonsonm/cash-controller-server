@@ -1,4 +1,5 @@
 import { db } from './database/db.js';
+import { sendRecoveryEmail } from './nodemailer/index.js';
 
 export class UserModel {
     static async getAll() {
@@ -6,7 +7,7 @@ export class UserModel {
         return users
     }
 
-    static async getOneById(id) {
+    static async getOneById({id}) {
         const user = await db.sequelize.query('SELECT * FROM users WHERE id = :id', {
             replacements: { id },
             type: db.sequelize.QueryTypes.SELECT
@@ -14,7 +15,7 @@ export class UserModel {
         return user
     }
 
-    static async createNewUser(user) {
+    static async createNewUser({user}) {
         const { name, lastName, email, password } = user
 
         const newUser = await db.sequelize.query('INSERT INTO users (name, lastName, email, password, availableBudget) VALUES (:name, :lastName, :email, :password, 0.0)', {
@@ -26,15 +27,16 @@ export class UserModel {
         return newUser
     }
 
-    static async logInUser(user) {
+    static async resetPassword({user}) {   
         const { email, password } = user
 
-        const userLogIn = await db.sequelize.query('SELECT * FROM users WHERE email = :email AND password = :password', {
-            replacements: { email, password },
-            type: db.sequelize.QueryTypes.SELECT
+        const userReset = await db.sequelize.query('UPDATE users SET password = :password WHERE email = :email', {
+            replacements: { password, email },
+            type: db.sequelize.QueryTypes.UPDATE
         }).catch(err => {
             console.log(err)
         })
-        return userLogIn
+        await sendRecoveryEmail({userReset})
+        return userReset
     }
 }
