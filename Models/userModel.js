@@ -39,4 +39,15 @@ export class UserModel {
         await sendRecoveryEmail({userReset})
         return userReset
     }
+
+    static async getBalance({email}) {
+        const balance = await db.sequelize.query('SELECT availableBudget FROM users WHERE email = :email', {
+            replacements: { email },
+            type: db.sequelize.QueryTypes.SELECT
+        }).catch(err => {
+            console.log(err.message)
+        })
+        console.log(balance)
+        return balance
+    }
 }

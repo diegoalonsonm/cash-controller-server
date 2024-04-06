@@ -14,7 +14,7 @@ export class UserController {
     static async getOne(req, res) {
         try {
             const id = req.params.id
-            const user = await UserModel.getOneById(id)
+            const user = await UserModel.getOneById({id})
             res.json(user)
         } catch (err) {
             res.status(500).send('error: ' + err.message)
@@ -27,7 +27,7 @@ export class UserController {
 
             if (user.error) return res.status(400).json({ error: JSON.parse(user.error.message) })
 
-            const newUser = await UserModel.createNewUser(user)
+            const newUser = await UserModel.createNewUser({user})
             res.json(newUser)
         } catch (err) {
             res.status(500).send('error: ' + err.message)
@@ -52,10 +52,21 @@ export class UserController {
 
             if (email.error) return res.status(400).json({ error: JSON.parse(email.error.message) })
 
-            const userReset = await UserModel.resetPassword(user)
+            const userReset = await UserModel.resetPassword({user})
             res.json(userReset)
         } catch (err) {
             res.status(500).send('error: ' + err.message)
+        }
+    }
+
+    static async getBalance(req, res) {
+        try {
+            const email = req.params.email
+            const balance = await UserModel.getBalance({email})
+            res.json(balance)
+        } catch (err) {
+            res.status(500).send('error: ' + err.message)
+            console.log(err)
         }
     }
 }

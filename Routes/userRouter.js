@@ -9,4 +9,6 @@ userRotuer.post('/', UserController.newUser)
 
 userRotuer.post('/recovery', UserController.resetPassword) 
 
+userRotuer.get('/balance/:email', UserController.getBalance)
+
 export default userRotuer
