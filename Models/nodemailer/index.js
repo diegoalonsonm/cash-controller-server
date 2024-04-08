@@ -32,7 +32,7 @@ export const sendRecoveryEmail = async ({object}) => {
         from: process.env.EMAIL_USER,
         to: object.email,
         subject: 'Password Recovery',
-        html: passwordRevoceryEmail(object)
+        html: passwordRevoceryEmail({object})
     }
 
     transporter.sendMail(mailOptions, (err, info) => {

@@ -1,5 +1,5 @@
 import { UserModel } from "../Models/userModel.js"
-import { validateRecovery, validateUser } from "../Models/validations/userValidation.js"
+import { validateUser } from "../Models/validations/userValidation.js"
 
 export class UserController {
     static async getAll(req, res) {
@@ -48,12 +48,12 @@ export class UserController {
             const email = req.body.email
             const password = generateRandomPassword()
 
-            const user = {password}
-
             if (email.error) return res.status(400).json({ error: JSON.parse(email.error.message) })
+            
+            const user = {password, email}
 
             const userReset = await UserModel.resetPassword({user})
-            res.json(userReset)
+            res.json(userReset)        
         } catch (err) {
             res.status(500).send('error: ' + err.message)
         }

@@ -2,10 +2,9 @@ create database cashController;
 use cashController;
 
 create table users (
-	id int auto_increment primary key,
     name varchar(25) not null,
     lastName varchar(40) not null,
-    email varchar(30) not null,
+    email varchar(30) not null primary key,
     password varchar(30) not null,
     availableBudget decimal (10, 2)
 );
@@ -14,19 +13,23 @@ insert into users (name, lastName, email, password, availableBudget) values ('Di
 insert into users (name, lastName, email, password, availableBudget) values ('Juan', 'Perez', 'juanperez@gmail.com', '1234', 100.00);
 insert into users (name, lastName, email, password, availableBudget) values ('Maria', 'Gonzalez', 'gonza.maria@apple.com', 'marimari', 200.00);
 
+update users set password = 'hola123' where email = 'diegoalonsonm@gmail.com';
+
+select * from users where email = 'diegoalonsonm@gmail.com';
+
 create table expense (
 	id int auto_increment primary key,
     description varchar(255) not null,
     categoryId int not null,
     amount decimal(10, 2),
     date date not null,
-    userId int not null,
-    foreign key (userId) references users(id),
+    userEmail varchar(30) not null,
+    foreign key (userEmail) references users(email),
     foreign key (categoryId) references category(id)
 );
 
-insert into expense (description, categoryId, amount, date, userId) values ('Lunch', 1, 10.00, '2024-04-03', 1);
-insert into expense (description, categoryId, amount, date, userId) values ('Train', 2, 2.00, '2024-04-03', 1);
+insert into expense (description, categoryId, amount, date, userEmail) values ('Lunch', 1, 10.00, '2024-04-03', 'diegoalonsonm@gmail.com');
+insert into expense (description, categoryId, amount, date, userEmail) values ('Train', 2, 2.00, '2024-04-03', 'diegoalonsonm@gmail.com');
 
 create table income (
 	id int auto_increment primary key,
@@ -34,13 +37,13 @@ create table income (
     categoryId int not null,
     amount decimal(10, 2),
     date date not null,
-    userId int not null,
-    foreign key (userId) references users(id),
+    userEmail varchar(30) not null,
+    foreign key (userEmail) references users(email),
     foreign key (categoryId) references category(id)
 );
 
-insert into income (description, categoryId, amount, date, userId) values ('Salary', 9, 1000.00, '2024-04-03', 1);
-insert into income (description, categoryId, amount, date, userId) values ('Investment', 10, 200.00, '2024-04-03', 1);
+insert into income (description, categoryId, amount, date, userEmail) values ('Salary', 9, 1000.00, '2024-04-03', 'diegoalonsonm@gmail.com');
+insert into income (description, categoryId, amount, date, userEmail) values ('Investment', 10, 200.00, '2024-04-03', 'diegoalonsonm@gmail.com');
 
 create table category (
 	id int auto_increment primary key,

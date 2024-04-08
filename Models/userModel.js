@@ -36,7 +36,7 @@ export class UserModel {
         }).catch(err => {
             console.log(err)
         })
-        await sendRecoveryEmail({userReset})
+        await sendRecoveryEmail({object: {email, password}})
         return userReset
     }
 
