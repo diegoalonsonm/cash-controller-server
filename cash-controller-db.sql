@@ -10,11 +10,9 @@ create table users (
     profilePic text
 );
 
-insert into users (name, lastName, email, password, availableBudget) values ('Diego', 'Naranjo', 'diegoalonsonm@gmail.com', 'Danm0309', 133.85);
-insert into users (name, lastName, email, password, availableBudget) values ('Juan', 'Perez', 'juanperez@gmail.com', '1234', 100.00);
-insert into users (name, lastName, email, password, availableBudget) values ('Maria', 'Gonzalez', 'gonza.maria@apple.com', 'marimari', 200.00);
-
-update users set password = 'Danm0309' where email = 'diegoalonsonm@gmail.com';
+insert into users (name, lastName, email, password, availableBudget) values ('Diego', 'Naranjo', 'diegoalonsonm@gmail.com', '*', 133.85);
+insert into users (name, lastName, email, password, availableBudget) values ('Juan', 'Perez', 'juanperez@gmail.com', '*', 100.00);
+insert into users (name, lastName, email, password, availableBudget) values ('Maria', 'Gonzalez', 'gonza.maria@apple.com', '*', 200.00);
 
 select * from users where email = 'diegoalonsonm@gmail.com';
 
