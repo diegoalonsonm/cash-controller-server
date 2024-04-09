@@ -7,9 +7,9 @@ export class UserModel {
         return users
     }
 
-    static async getOneById({id}) {
-        const user = await db.sequelize.query('SELECT * FROM users WHERE id = :id', {
-            replacements: { id },
+    static async getOneById({email}) {
+        const user = await db.sequelize.query('SELECT * FROM users WHERE email = :email', {
+            replacements: { email },
             type: db.sequelize.QueryTypes.SELECT
         })
         return user
@@ -40,7 +40,7 @@ export class UserModel {
         return userReset
     }
 
-    static async getBalance({email}) {
+    /*static async getBalance({email}) {
         const balance = await db.sequelize.query('SELECT availableBudget FROM users WHERE email = :email', {
             replacements: { email },
             type: db.sequelize.QueryTypes.SELECT
@@ -49,5 +49,45 @@ export class UserModel {
         })
         console.log(balance)
         return balance
+    }*/
+
+    static async getBalance({email}) {
+        const incomeResult = await db.sequelize.query('SELECT SUM(amount) FROM income WHERE userEmail = :email', {
+            replacements: { email },
+            type: db.sequelize.QueryTypes.SELECT
+        }).catch(err => {
+            console.log(err.message)
+        })
+
+        const expenseResult = await db.sequelize.query('SELECT SUM(amount) FROM expense WHERE userEmail = :email', {
+            replacements: { email },
+            type: db.sequelize.QueryTypes.SELECT
+        }).catch(err => {
+            console.log(err.message)
+        })
+
+        const balanceResult = await db.sequelize.query('SELECT availableBudget FROM users WHERE email = :email', {
+            replacements: { email },
+            type: db.sequelize.QueryTypes.SELECT
+        }).catch(err => {
+            console.log(err.message)
+        })
+
+        const incomeAmount = Number(incomeResult[0]['SUM(amount)'])
+        const expenseAmount = Number(expenseResult[0]['SUM(amount)'] )
+        const balance = Number(balanceResult[0].availableBudget)
+
+        const totalBalance = balance + incomeAmount - expenseAmount
+        return totalBalance        
+    }
+
+    static async updateBalance({email, balance}) {
+        const updatedBalance = await db.sequelize.query('UPDATE users SET availableBudget = :balance WHERE email = :email', {
+            replacements: { balance, email },
+            type: db.sequelize.QueryTypes.UPDATE
+        }).catch(err => {
+            console.log(err.message)
+        })
+        return updatedBalance
     }
 }

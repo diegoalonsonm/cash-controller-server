@@ -1,5 +1,7 @@
 import { UserModel } from "../Models/userModel.js"
 import { validateUser } from "../Models/validations/userValidation.js"
+import { IncomeModel } from "../Models/incomeModel.js"
+import { ExpenseModel } from "../Models/expenseModel.js"
 
 export class UserController {
     static async getAll(req, res) {
@@ -13,8 +15,8 @@ export class UserController {
 
     static async getOne(req, res) {
         try {
-            const id = req.params.id
-            const user = await UserModel.getOneById({id})
+            const email = req.params.email
+            const user = await UserModel.getOneById({email})
             res.json(user)
         } catch (err) {
             res.status(500).send('error: ' + err.message)
@@ -67,6 +69,25 @@ export class UserController {
         } catch (err) {
             res.status(500).send('error: ' + err.message)
             console.log(err)
+        }
+    }
+
+    static async updateBalance(req, res) {
+        try {
+            const email = req.params.email
+            const balance = await this.getBalance()
+            const incomes = IncomeModel.getAllIncomes(email)
+            const expenses = ExpenseModel.getAllExpenses(email)
+
+            const totalIncome = incomes.reduce((sum, income) => sum + income.amount, 0)
+            const totalExpense = expenses.reduce((sum, expense) => sum + expense.amount, 0)
+
+            balance += totalIncome - totalExpense
+
+            const updatedBalance = await UserModel.updateBalance({email, balance})
+            res.json(updatedBalance)
+        } catch (err) {
+            res.status(500).send('error: ' + err.message)
         }
     }
 }

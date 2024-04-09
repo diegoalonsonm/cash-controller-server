@@ -5,6 +5,8 @@ import cookieParser from 'cookie-parser';
 import userRouter from './Routes/userRouter.js';
 import { db } from './Models/database/db.js';
 import bodyParser from 'body-parser';
+import expenseRouter from './Routes/expenseRouter.js';
+import incomeRouter from './Routes/incomeRouter.js';
 
 const PORT = 3930 
 
@@ -21,6 +23,8 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
 app.use('/users', userRouter)
+app.use('/expenses', expenseRouter)
+app.use('/incomes', incomeRouter)
 
 const verifyToken = (req, res, next) => {
     const token = req.cookies.token
