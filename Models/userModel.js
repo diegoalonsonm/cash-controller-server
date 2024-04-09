@@ -40,17 +40,6 @@ export class UserModel {
         return userReset
     }
 
-    /*static async getBalance({email}) {
-        const balance = await db.sequelize.query('SELECT availableBudget FROM users WHERE email = :email', {
-            replacements: { email },
-            type: db.sequelize.QueryTypes.SELECT
-        }).catch(err => {
-            console.log(err.message)
-        })
-        console.log(balance)
-        return balance
-    }*/
-
     static async getBalance({email}) {
         const incomeResult = await db.sequelize.query('SELECT SUM(amount) FROM income WHERE userEmail = :email', {
             replacements: { email },
@@ -79,15 +68,5 @@ export class UserModel {
 
         const totalBalance = balance + incomeAmount - expenseAmount
         return totalBalance        
-    }
-
-    static async updateBalance({email, balance}) {
-        const updatedBalance = await db.sequelize.query('UPDATE users SET availableBudget = :balance WHERE email = :email', {
-            replacements: { balance, email },
-            type: db.sequelize.QueryTypes.UPDATE
-        }).catch(err => {
-            console.log(err.message)
-        })
-        return updatedBalance
     }
 }
