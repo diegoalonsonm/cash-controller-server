@@ -69,4 +69,16 @@ export class UserModel {
         const totalBalance = balance + incomeAmount - expenseAmount
         return totalBalance        
     }
+
+    static async updateUserInfo({user}) {
+        const { name, lastName, email, password } = user
+
+        const updatedUser = await db.sequelize.query('UPDATE users SET name = :name, lastName = :lastName, password = :password WHERE email = :email', {
+            replacements: { name, lastName, email, password },
+            type: db.sequelize.QueryTypes.UPDATE
+        }).catch(err => {
+            console.log(err)
+        })
+        return updatedUser
+    }
 }

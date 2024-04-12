@@ -1,5 +1,5 @@
 import { UserModel } from "../Models/userModel.js"
-import { validateUser } from "../Models/validations/userValidation.js"
+import { validatePartialUser, validateUser } from "../Models/validations/userValidation.js"
 import { IncomeModel } from "../Models/incomeModel.js"
 import { ExpenseModel } from "../Models/expenseModel.js"
 
@@ -86,6 +86,18 @@ export class UserController {
 
             const updatedBalance = await UserModel.updateBalance({email, balance})
             res.json(updatedBalance)
+        } catch (err) {
+            res.status(500).send('error: ' + err.message)
+        }
+    }
+
+    static async updateUserInfo(req, res) {
+        try {
+            const email = req.params.email
+            const body = validatePartialUser(req.body)
+            const user = {email, ...body}
+            const updatedUser = await UserModel.updateUserInfo({user})
+            res.json(updatedUser)
         } catch (err) {
             res.status(500).send('error: ' + err.message)
         }
