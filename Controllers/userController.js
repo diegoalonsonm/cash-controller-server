@@ -1,5 +1,4 @@
 import { UserModel } from "../Models/userModel.js"
-import { validatePartialUser, validateUser } from "../Models/validations/userValidation.js"
 import { IncomeModel } from "../Models/incomeModel.js"
 import { ExpenseModel } from "../Models/expenseModel.js"
 
@@ -25,9 +24,13 @@ export class UserController {
 
     static async newUser(req, res) {
         try {
-            const user = validateUser(req.body)
+            const user = req.body
 
             if (user.error) return res.status(400).json({ error: JSON.parse(user.error.message) })
+
+            const emailExists = await UserModel.checkEmailExists({email: user.email})
+            
+            if (emailExists) return res.status(409).json({ error: 'Email already exists' })
 
             const newUser = await UserModel.createNewUser({user})
             res.json(newUser)
@@ -94,7 +97,7 @@ export class UserController {
     static async updateUserInfo(req, res) {
         try {
             const email = req.params.email
-            const body = validatePartialUser(req.body)
+            const body = req.body
             const user = {email, ...body}
             const updatedUser = await UserModel.updateUserInfo({user})
             res.json(updatedUser)
