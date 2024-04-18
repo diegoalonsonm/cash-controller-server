@@ -15,6 +15,14 @@ export class UserModel {
         return user
     }
 
+    static async checkEmailExists({email}) {
+        const user = await db.sequelize.query('SELECT * FROM users WHERE email = :email', {
+            replacements: { email },
+            type: db.sequelize.QueryTypes.SELECT
+        })
+        return user.length > 0
+    }
+
     static async createNewUser({user}) {
         const { name, lastName, email, password } = user
 
