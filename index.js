@@ -11,6 +11,7 @@ import incomeRouter from './Routes/incomeRouter.js';
 const PORT = 3930 
 
 const app = express()
+
 app.use(express.json())
 app.use(cors({
     origin: ['*', 'http://localhost:3000', 'https://cash-controller-client.vercel.app/'],
