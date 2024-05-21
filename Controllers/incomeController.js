@@ -42,4 +42,14 @@ export class IncomeController {
             res.status(500).send('error: ' + err.message)
         }
     }
+    
+    static async getEveryMonthIncome(req, res) {
+        try {
+            const email = req.params.email
+            const everyMonthIncome = await IncomeModel.getEveryMonthIncome({email})
+            res.json(everyMonthIncome)
+        } catch (err) {
+            res.status(500).send('error: ' + err.message)
+        }
+    }
 }

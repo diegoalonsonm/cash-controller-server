@@ -32,4 +32,22 @@ export class IncomeModel {
         })
         return income
     }
+
+    static async getEveryMonthIncome({email}) {
+        let allMonthsIncome = []
+
+        for (let i = 1; i <= 12; i++) {
+            const monthIncome = await db.sequelize.query('SELECT SUM(amount) FROM income WHERE userEmail = :email AND MONTH(date) = :month', {
+                replacements: { email, month: i }, type: db.sequelize.QueryTypes.SELECT
+            }).then(result => {
+                return Number(result[0] && result[0]['SUM(amount)'] ? result[0]['SUM(amount)'] : 0)
+            }).catch(err => {
+                console.log(err.message)
+            })
+            
+            allMonthsIncome.push(monthIncome)
+        }    
+        
+        return allMonthsIncome        
+    }
 }

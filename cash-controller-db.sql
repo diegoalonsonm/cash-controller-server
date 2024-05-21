@@ -10,12 +10,7 @@ create table users (
     profilePic text
 );
 
-insert into users (name, lastName, email, password, availableBudget) values ('Diego', 'Naranjo', 'diegoalonsonm@gmail.com', '*', 133.85);
-insert into users (name, lastName, email, password, availableBudget) values ('Juan', 'Perez', 'juanperez@gmail.com', '*', 100.00);
-insert into users (name, lastName, email, password, availableBudget) values ('Maria', 'Gonzalez', 'gonza.maria@apple.com', '*', 200.00);
-insert into users (name, lastName, email, password) values ('Carlos', 'Jimenez', 'jimenezcarlitos@gmail.com', '*');
-
-select * from users;
+insert into users (name, lastName, email, password, availableBudget) values ('John', 'Doe', 'johndoe@gmail.com', '123456', 0.0);
 
 create table expense (
 	id int auto_increment primary key,
@@ -28,11 +23,7 @@ create table expense (
     foreign key (categoryId) references category(id)
 );
 
-select * from expense order by date desc;
-SELECT * FROM expense WHERE userEmail = 'diegoalonsonm@gmail.com' order by date desc;
-
-insert into expense (description, categoryId, amount, date, userEmail) values ('Lunch', 1, 10.00, '2024-04-03', 'diegoalonsonm@gmail.com');
-insert into expense (description, categoryId, amount, date, userEmail) values ('Train', 2, 2.00, '2024-04-03', 'diegoalonsonm@gmail.com');
+insert into expense (description, categoryId, amount, date, userEmail) values ('Lunch', 1, 10.0, '2024-01-01', 'johndoe@gmail.com');
 
 create table income (
 	id int auto_increment primary key,
@@ -45,15 +36,12 @@ create table income (
     foreign key (categoryId) references category(id)
 );
 
-insert into income (description, categoryId, amount, date, userEmail) values ('Salary', 9, 1000.00, '2024-04-03', 'diegoalonsonm@gmail.com');
-insert into income (description, categoryId, amount, date, userEmail) values ('Investment', 10, 200.00, '2024-04-03', 'diegoalonsonm@gmail.com');
+insert into income (description, categoryId, amount, date, userEmail) values ('Salary', 9, 1000, '2024-01-02', 'johndoe@gmail.com');
 
 create table category (
 	id int auto_increment primary key,
     description varchar(255) not null
 );
-
-select * from category;
 
 insert into category (description) values ('Food');
 insert into category (description) values ('Transport');

@@ -42,4 +42,14 @@ export class ExpenseController {
             res.status(500).send('error: ' + err.message)
         }
     }
+
+    static async getEveryMonthExpense(req, res) {
+        try {
+            const email = req.params.email
+            const allMonthsExpense = await ExpenseModel.getEveryMonthExpense({email})
+            res.json(allMonthsExpense)
+        } catch (err) {
+            res.status(500).send('error: ' + err.message)
+        }
+    }
 }
