@@ -50,4 +50,20 @@ export class ExpenseModel {
         
         return allMonthsExpense        
     }
+
+    static async getTop5Categories({email}) {
+        const top5Categories = await db.sequelize.query('SELECT category.description, SUM(expense.amount) as totalAmount FROM expense INNER JOIN category ON expense.categoryId = category.id WHERE userEmail = :email GROUP BY category.description ORDER BY totalAmount DESC LIMIT 5', {
+            replacements: { email },
+            type: db.sequelize.QueryTypes.SELECT
+        })
+        return top5Categories
+    }
+
+    static async getExpenseAmountByCategory({email}) {
+        const expenseAmountByCategory = await db.sequelize.query('SELECT category.description, SUM(expense.amount) as totalAmount FROM expense INNER JOIN category ON expense.categoryId = category.id WHERE userEmail = :email GROUP BY category.description ORDER BY totalAmount DESC', {
+            replacements: { email },
+            type: db.sequelize.QueryTypes.SELECT
+        })
+        return expenseAmountByCategory
+    }
 }

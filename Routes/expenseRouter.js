@@ -7,6 +7,8 @@ expenseRouter.get('/:email', ExpenseController.getAllFromUser)
 expenseRouter.get('/lastFive/:email', ExpenseController.getLastFiveFromUser)
 expenseRouter.get('/totalAmount/:email', ExpenseController.getTotalAmountFromUser)
 expenseRouter.get('/monthlyExpense/:email', ExpenseController.getEveryMonthExpense)
+expenseRouter.get('/top5Categories/:email', ExpenseController.getTop5Categories)
+expenseRouter.get('/amountByCategory/:email', ExpenseController.getExpenseAmountByCategory)
 
 expenseRouter.post('/', ExpenseController.addExpense)
 

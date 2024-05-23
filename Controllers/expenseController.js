@@ -52,4 +52,24 @@ export class ExpenseController {
             res.status(500).send('error: ' + err.message)
         }
     }
+
+    static async getTop5Categories(req, res) {
+        try {
+            const email = req.params.email
+            const top5Categories = await ExpenseModel.getTop5Categories({email})
+            res.json(top5Categories)
+        } catch (err) {
+            res.status(500).send('error: ' + err.message)
+        }
+    }
+
+    static async getExpenseAmountByCategory (req, res) {
+        try {
+            const email = req.params.email
+            const expenseAmountByCategory = await ExpenseModel.getExpenseAmountByCategory({email})
+            res.json(expenseAmountByCategory)
+        } catch (err) {
+            res.status(500).send('error: ' + err.message)
+        }
+    }
 }
